@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Portal de acceso - Simulación</title>
+<style>
+  /* Reset ligero */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html,body {
+    height: 100%;
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* Fondo de pantalla (usa la imagen en proyecto-uanl/images/fondo.jpg) */
+  body {
+    background: url('images/fondo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  /* Caja del login */
+  .login-container {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255,255,255,0.94);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    padding: 34px 36px 28px 36px;
+    position: relative;
+    overflow: visible;
+  }
+
+  /* Banner (imagen dentro del cuadro, superior izquierda) */
+  .banner {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    width: 110px;
+    height: auto;
+    border-radius: 6px;
+    background: transparent;
+    object-fit: contain;
+  }
+
+  /* Contenido principal empujado hacia abajo para dejar espacio al banner */
+  .content {
+    margin-top: 68px; /* deja espacio para el banner */
+  }
+
+  .title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #0f1721;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 13.5px;
+    color: #555b66;
+    margin-bottom: 20px;
+  }
+
+  .input-group { margin-bottom: 14px; }
+  .input-group label {
+    display:block;
+    font-size: 13px;
+    color:#333;
+    margin-bottom:6px;
+    font-weight: 500;
+  }
+  .input-group input {
+    width:100%;
+    padding:11px 12px;
+    border:1px solid #d6d6d8;
+    border-radius:6px;
+    font-size:15px;
+    transition: box-shadow .15s, border-color .15s;
+    background: #fff;
+  }
+  .input-group input:focus {
+    outline:none;
+    border-color:#0067b8;
+    box-shadow: 0 0 0 4px rgba(0,103,184,0.08);
+  }
+
+  .options {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:12px 0 18px 0;
+    gap:12px;
+    font-size:13px;
+    color:#444;
+  }
+  .remember { display:flex; align-items:center; gap:8px; }
+  .forgot-password { color:#0067b8; text-decoration:none; font-weight:500; }
+  .forgot-password:hover { text-decoration:underline; }
+
+  .login-button {
+    width:100%;
+    padding:12px;
+    border-radius:6px;
+    border:none;
+    background: linear-gradient(180deg,#0b63c7,#0054b3);
+    color:#fff;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    box-shadow: 0 6px 14px rgba(11,99,199,0.18);
+    transition: transform .08s ease, box-shadow .12s ease;
+  }
+  .login-button:active { transform: translateY(1px); }
+  .login-button:hover { box-shadow: 0 8px 18px rgba(11,99,199,0.22); }
+
+  .divider {
+    margin:22px 0;
+    border-top:1px solid #e6e6e8;
+    position:relative;
+    height:1px;
+  }
+  .divider span {
+    position:absolute;
+    top:-10px;
+    left:50%;
+    transform:translateX(-50%);
+    background: rgba(255,255,255,0.94);
+    padding:0 10px;
+    color:#60656f;
+    font-size:13px;
+  }
+
+  .alt-login {
+    text-align:center;
+    color:#555;
+    font-size:13px;
+  }
+  .alt-list {
+    margin-top:12px;
+    display:flex;
+    justify-content:center;
+    gap:12px;
+  }
+  .alt-item {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    color:#444;
+    font-size:13px;
+  }
+  .alt-icon {
+    width:42px;
+    height:42px;
+    border-radius:999px;
+    background:#f3f4f6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+  }
+
+  .footer {
+    margin-top:18px;
+    text-align:center;
+    color:#6a6f77;
+    font-size:12px;
+    line-height:1.35;
+  }
+  .footer a { color:#0067b8; text-decoration:none; font-weight:500; }
+  .footer a:hover { text-decoration:underline; }
+
+  /* Responsivo */
+  @media (max-width:480px) {
+    .login-container { padding:20px; max-width:420px; }
+    .banner { width:92px; top:14px; left:14px; }
+    .content { margin-top:60px; }
+  }
+</style>
+</head>
+<body>
+  <div class="login-container" role="main" aria-labelledby="loginTitle">
+    <!-- Banner dentro del cuadro; ruta relativa: proyecto-uanl/images/banner.png -->
+    <img src="images/banner.png" class="banner" alt="Banner institucional">
+
+    <div class="content">
+      <div class="title" id="loginTitle">Iniciar sesión</div>
+      <div class="subtitle">Acceso - entorno de práctica (simulación segura)</div>
+
+      <form id="loginForm" autocomplete="off" novalidate>
+        <div class="input-group">
+          <label for="username">Usuario</label>
+          <input id="username" name="username" type="text" inputmode="email"
+                 placeholder="usuario@ejemplo.com" required aria-required="true" autocomplete="username">
+        </div>
+
+        <div class="input-group">
+          <label for="password">Contraseña</label>
+          <input id="password" name="password" type="password"
+                 placeholder="Introduzca su contraseña" required aria-required="true" autocomplete="current-password">
+        </div>
+
+        <div class="options">
+          <div class="remember">
+            <input id="remember" name="remember" type="checkbox" aria-label="Mantener sesión iniciada">
+            <label for="remember">Mantener la sesión iniciada</label>
+          </div>
+          <a class="forgot-password" href="#" onclick="event.preventDefault(); alert('En un entorno real iría a la recuperación de contraseña.');">¿Ha olvidado su contraseña?</a>
+        </div>
+
+        <button type="submit" class="login-button" aria-label="Iniciar sesión">Iniciar sesión</button>
+      </form>
+
+      <div class="divider"><span>O inicie sesión con</span></div>
+
+      <div class="alt-login">
+        <div>Use una app o método alternativo</div>
+        <div class="alt-list" role="list">
+          <a href="#" class="alt-item" role="listitem" onclick="event.preventDefault(); alert('Simulación: Microsoft Authenticator');">
+            <div class="alt-icon" aria-hidden="true">📱</div>
+            <div>Authenticator</div>
+          </a>
+          <a href="#" class="alt-item" role="listitem" onclick="event.preventDefault(); alert('Simulación: Clave de seguridad');">
+            <div class="alt-icon" aria-hidden="true">🔑</div>
+            <div>Clave de seguridad</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer" aria-live="polite">
+        <div>¿No puede acceder a su cuenta? <a href="#" onclick="event.preventDefault(); alert('Simulación: crear cuenta');">Crear una</a></div>
+        <div style="margin-top:8px;"><a href="#" onclick="event.preventDefault(); alert('Simulación: Términos');">Términos de uso</a> • <a href="#" onclick="event.preventDefault(); alert('Simulación: Privacidad');">Privacidad y cookies</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // IMPORTANTE: Este script es intencionalmente seguro para fines de práctica.
+    // No envía ni almacena el usuario/contraseña en ningún lugar.
+    // Cambia el comportamiento si lo vas a usar de otra forma (entorno real/auth).
+
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Lectura de campos solo para uso inmediato en la UI (NO guardar ni loggear).
+      const user = document.getElementById('username').value || '[vacío]';
+
+      // Muestra resultado simulado al usuario.
+      // NO mostrar ni guardar contraseñas.
+      window.alert('✅ Simulación completada.\n\nUsuario: ' + user + '\n\nNingún dato fue enviado ni almacenado.');
+
+      // (Opcional) limpiar inputs
+      // document.getElementById('username').value = '';
+      // document.getElementById('password').value = '';
+    });
+  </script>
+</body>
+</html>
